@@ -20,10 +20,14 @@ include:
 sdk: {id: gecko_sdk, version: 3.2.2}
 toolchain_settings: []
 component:
+- {id: emlib_iadc}
 - {id: BGM220SC22WGA}
+- {id: app_log}
 - {id: bluetooth_feature_connection}
 - {id: bluetooth_feature_gatt_server}
 - {id: bluetooth_feature_advertiser}
+- instance: [inst]
+  id: iostream_usart
 - {id: bluetooth_feature_sm}
 - {id: mpu}
 - {id: bluetooth_feature_system}
@@ -36,6 +40,7 @@ component:
 - {id: rail_util_pti}
 - {id: app_assert}
 - {id: bluetooth_feature_gatt}
+- {id: uartdrv_core}
 other_file:
 - {path: create_bl_files.bat}
 - {path: create_bl_files.sh}
