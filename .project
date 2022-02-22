@@ -199,6 +199,11 @@
 			<locationURI>STUDIO_SDK_LOC/platform/emlib/inc/em_ldma.h</locationURI>
 		</link>
 		<link>
+			<name>gecko_sdk_3.2.2/platform/emlib/inc/em_letimer.h</name>
+			<type>1</type>
+			<locationURI>STUDIO_SDK_LOC/platform/emlib/inc/em_letimer.h</locationURI>
+		</link>
+		<link>
 			<name>gecko_sdk_3.2.2/platform/emlib/inc/em_msc.h</name>
 			<type>1</type>
 			<locationURI>STUDIO_SDK_LOC/platform/emlib/inc/em_msc.h</locationURI>
@@ -287,6 +292,11 @@
 			<name>gecko_sdk_3.2.2/platform/emlib/src/em_ldma.c</name>
 			<type>1</type>
 			<locationURI>STUDIO_SDK_LOC/platform/emlib/src/em_ldma.c</locationURI>
+		</link>
+		<link>
+			<name>gecko_sdk_3.2.2/platform/emlib/src/em_letimer.c</name>
+			<type>1</type>
+			<locationURI>STUDIO_SDK_LOC/platform/emlib/src/em_letimer.c</locationURI>
 		</link>
 		<link>
 			<name>gecko_sdk_3.2.2/platform/emlib/src/em_msc.c</name>

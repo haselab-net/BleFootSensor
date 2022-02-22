@@ -31,20 +31,27 @@
 #include "app_assert.h"
 #include "sl_bluetooth.h"
 #include "gatt_db.h"
+#include "iadc.h"
+#include "letimer.h"
+#include "cog.h"
 #include "app.h"
 
 // The advertising set handle allocated from Bluetooth stack.
 static uint8_t advertising_set_handle = 0xff;
+uint8_t bleConnection;
 
 /**************************************************************************//**
  * Application Init.
  *****************************************************************************/
 SL_WEAK void app_init(void)
 {
-  /////////////////////////////////////////////////////////////////////////////
-  // Put your additional application init code here!                         //
-  // This is called once during start-up.                                    //
-  /////////////////////////////////////////////////////////////////////////////
+  app_log_info("initialize IADC\n");
+  //  ADC
+  initIADC();
+  scanIADC();
+  //  timer
+  initCMU();
+  initLetimer();
 }
 
 /**************************************************************************//**
@@ -121,6 +128,8 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
     // -------------------------------
     // This event indicates that a new connection was opened.
     case sl_bt_evt_connection_opened_id:
+      // When sending notifications we need the connection handle.  Capture it here
+      bleConnection = evt->data.evt_connection_opened.connection;
       break;
 
     // -------------------------------
@@ -137,8 +146,57 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
     ///////////////////////////////////////////////////////////////////////////
     // Add additional event handlers here as your application requires!      //
     ///////////////////////////////////////////////////////////////////////////
+    case sl_bt_evt_gatt_server_characteristic_status_id:
+      if ((evt->data.evt_gatt_server_characteristic_status.characteristic == gattdb_adc)
+          && (evt->data.evt_gatt_server_characteristic_status.status_flags == 0x01)) {
+        if (evt->data.evt_gatt_server_characteristic_status.client_config_flags == 0x00) {
+             pressureSensor.notifyAdc= false;
+        }
+        else {
+            pressureSensor.notifyAdc= true;
+        }
+      }
+      if ((evt->data.evt_gatt_server_characteristic_status.characteristic == gattdb_cog)
+          && (evt->data.evt_gatt_server_characteristic_status.status_flags == 0x01)) {
+        if (evt->data.evt_gatt_server_characteristic_status.client_config_flags == 0x00) {
+             pressureSensor.notifyCog= false;
+        }
+        else {
+            pressureSensor.notifyCog= true;
+        }
+      }
 
-    // -------------------------------
+      break;
+
+    case sl_bt_evt_system_external_signal_id:
+      /* Process external signals (process notifications) */
+      switch (evt->data.evt_system_external_signal.extsignals){
+        case ES_COG:
+          if (pressureSensor.notifyAdc){
+              memcpy(pressureSensor.adcData, (void*)adcValue, sizeof(pressureSensor.adcData));
+              sc = sl_bt_gatt_server_send_notification(
+                  bleConnection, gattdb_adc, sizeof(pressureSensor.adcData),
+                  (uint8_t*) pressureSensor.adcData);
+              if (sc != SL_STATUS_OK){
+                  app_log_error("sl_bt_gatt_server_send_notification failed to send ADC with code %d", sc);
+              }
+          }
+          if (pressureSensor.notifyCog){
+              memcpy(pressureSensor.cogData, (void*)cogValue, sizeof(pressureSensor.cogData));
+              sc = sl_bt_gatt_server_send_notification(
+                  bleConnection, gattdb_cog, sizeof(pressureSensor.cogData),
+                  (uint8_t*) pressureSensor.cogData);
+              if (sc != SL_STATUS_OK){
+                  app_log_error("sl_bt_gatt_server_send_notification failed to send COG with code %d", sc);
+              }
+          }
+          break;
+        default:
+          app_log_error("sl_bt_evt_system_external_signal_id got invalid ID %d", evt->data.evt_system_external_signal.extsignals);
+      }
+      break;
+
+      // -------------------------------
     // Default event handler.
     default:
       break;

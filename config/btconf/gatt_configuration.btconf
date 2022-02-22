@@ -50,25 +50,25 @@
   </service>
   
   <!--Balance-->
-  <service advertise="true" id="balance" name="Balance" requirement="mandatory" sourceId="balance" type="primary" uuid="b707a4af-d1c3-49eb-96c5-fdccb43d266f">
+  <service advertise="true" id="s_cog" name="Balance" requirement="mandatory" sourceId="balance" type="primary" uuid="b707a4af-d1c3-49eb-96c5-fdccb43d266f">
     <informativeText/>
     
-    <!--ADC-->
-    <characteristic const="false" id="adc" name="ADC" sourceId="adc" uuid="0027accf-065d-4777-910a-7361c0395256">
-      <description>adc</description>
+    <!--COG-->
+    <characteristic const="false" id="cog" name="COG" sourceId="cog" uuid="4dea8458-8a98-4c30-b708-6a372d0567ce">
+      <description>cog</description>
       <informativeText/>
-      <value length="16" type="hex" variable_length="false">00</value>
+      <value length="6" type="hex" variable_length="false">112233445566</value>
       <properties>
         <read authenticated="false" bonded="false" encrypted="false"/>
         <notify authenticated="false" bonded="false" encrypted="false"/>
       </properties>
     </characteristic>
     
-    <!--COG-->
-    <characteristic const="false" id="cog" name="COG" sourceId="cog" uuid="4dea8458-8a98-4c30-b708-6a372d0567ce">
-      <description>cog of 8 frames</description>
+    <!--ADC-->
+    <characteristic const="false" id="adc" name="ADC" sourceId="adc" uuid="0027accf-065d-4777-910a-7361c0395256">
+      <description>adc</description>
       <informativeText/>
-      <value length="32" type="hex" variable_length="false">00</value>
+      <value length="64" type="hex" variable_length="false">00</value>
       <properties>
         <read authenticated="false" bonded="false" encrypted="false"/>
         <notify authenticated="false" bonded="false" encrypted="false"/>
