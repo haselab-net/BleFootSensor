@@ -31,7 +31,5 @@
 *.out
 *.app
 
-.pdm/
-augogen/
 /autogen
 /GNU ARM v10.2.1 - Default

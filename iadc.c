@@ -88,13 +88,13 @@
 #define IADC_INPUT_7_PORT_PIN     iadcPosInputPortDPin3
 
 #define IADC_INPUT_0_BUS          CDBUSALLOC
-#define IADC_INPUT_0_BUSALLOC     GPIO_CDBUSALLOC_CDEVEN0_ADC0
+#define IADC_INPUT_0_BUSALLOC     GPIO_CDBUSALLOC_CDODD0_ADC0
 #define IADC_INPUT_1_BUS          CDBUSALLOC
-#define IADC_INPUT_1_BUSALLOC     GPIO_CDBUSALLOC_CDODD0_ADC0
+#define IADC_INPUT_1_BUSALLOC     GPIO_CDBUSALLOC_CDEVEN0_ADC0
 #define IADC_INPUT_2_BUS          CDBUSALLOC
-#define IADC_INPUT_2_BUSALLOC     GPIO_CDBUSALLOC_CDEVEN0_ADC0
+#define IADC_INPUT_2_BUSALLOC     GPIO_CDBUSALLOC_CDODD0_ADC0
 #define IADC_INPUT_3_BUS          CDBUSALLOC
-#define IADC_INPUT_3_BUSALLOC     GPIO_CDBUSALLOC_CDODD0_ADC0
+#define IADC_INPUT_3_BUSALLOC     GPIO_CDBUSALLOC_CDEVEN0_ADC0
 #define IADC_INPUT_4_BUS          CDBUSALLOC
 #define IADC_INPUT_4_BUSALLOC     GPIO_CDBUSALLOC_CDEVEN0_ADC0
 #define IADC_INPUT_5_BUS          CDBUSALLOC
@@ -104,7 +104,7 @@
 #define IADC_INPUT_7_BUS          CDBUSALLOC
 #define IADC_INPUT_7_BUSALLOC     GPIO_CDBUSALLOC_CDODD0_ADC0
 
-
+//  in the case of A or B BUS
 //#define IADC_INPUT_6_BUS          BBUSALLOC
 //#define IADC_INPUT_6_BUSALLOC     GPIO_BBUSALLOC_BEVEN0_ADC0
 
@@ -240,7 +240,7 @@ void initIADC (void)
   NVIC_EnableIRQ(IADC_IRQn);
 
   //  pull up adc pins
-  GPIO_PinModeSet(gpioPortC, 0, gpioModeDisabled, 0); //  pull up = disable + DOUT:1
+/*  GPIO_PinModeSet(gpioPortC, 0, gpioModeDisabled, 0); //  pull up = disable + DOUT:1
   GPIO_PinOutSet(gpioPortC, 0);
   GPIO_PinModeSet(gpioPortC, 1, gpioModeDisabled, 0); //  pull up = disable + DOUT:1
   GPIO_PinOutSet(gpioPortC, 1);
@@ -255,7 +255,7 @@ void initIADC (void)
   GPIO_PinModeSet(gpioPortD, 2, gpioModeDisabled, 0); //  pull up = disable + DOUT:1
   GPIO_PinOutSet(gpioPortD, 2);
   GPIO_PinModeSet(gpioPortD, 3, gpioModeDisabled, 0); //  pull up = disable + DOUT:1
-  GPIO_PinOutSet(gpioPortD, 3);
+  GPIO_PinOutSet(gpioPortD, 3);*/
 
   //  driving GPIO settings
   for(int i=0; i<NUM_ADC_DRIVINGPINS; ++i){
@@ -294,7 +294,7 @@ void IADC_IRQHandler(void)
       IADC_command(IADC0, iadcCmdStartScan);
   } else {
       IADC_setScanMask(IADC0, 0x000F);  // configure scan mask to measure first set of table entries
-      GPIO_PinOutSet(gpioPortB, drivingPins[drivingCount]);
+      GPIO_PinOutSet(drivingPorts[drivingCount], drivingPins[drivingCount]);
       drivingCount ++;
       if (drivingCount >= NUM_ADC_DRIVINGPINS){
           //  read all sensors
@@ -311,13 +311,14 @@ void IADC_IRQHandler(void)
 }
 
 void scanIADC(){
-  GPIO_PinOutClear(gpioPortB, drivingPins[drivingCount]);
+  GPIO_PinOutClear(drivingPorts[drivingCount], drivingPins[drivingCount]);
   IADC_command(IADC0, iadcCmdStartScan);
 }
 
 void printIADC(){
+  printf("\x1b[0;0H");
   for(int d=0; d<NUM_ADC_DRIVINGPINS; ++d){
-      printf("ADC B%d", drivingPins[d]);
+      printf("ADC %c%d", 'A'+drivingPorts[d], drivingPins[d]);
       for(int i=0; i<NUM_ADC_INPUTS; ++i){
           printf(" %d", adcValue[d][i]);
       }

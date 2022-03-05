@@ -100,6 +100,14 @@
 // [IADC0]$
 
 // $[I2C0]
+// I2C0 SCL on PA08
+#define I2C0_SCL_PORT                            gpioPortA
+#define I2C0_SCL_PIN                             8
+
+// I2C0 SDA on PA07
+#define I2C0_SDA_PORT                            gpioPortA
+#define I2C0_SDA_PIN                             7
+
 // [I2C0]$
 
 // $[EUART0]

@@ -50,7 +50,7 @@
   </service>
   
   <!--Balance-->
-  <service advertise="true" id="s_cog" name="Balance" requirement="mandatory" sourceId="balance" type="primary" uuid="b707a4af-d1c3-49eb-96c5-fdccb43d266f">
+  <service advertise="true" id="s_cog" name="Balance" requirement="mandatory" sourceId="balance" type="primary" uuid="8a762ee3-ff16-4e8f-ac7d-c55a4e06e430">
     <informativeText/>
     
     <!--COG-->
