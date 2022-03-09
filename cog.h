@@ -3,6 +3,7 @@
 #include "iadc.h"
 #include "sl_bluetooth.h"
 
+#define COG_FRAMES  10
 extern struct PressureSensor{
 	union {
 		struct {
@@ -12,9 +13,9 @@ extern struct PressureSensor{
 		unsigned char flags;
 	};
   short adcData[NUM_ADC_DRIVINGPINS][NUM_ADC_INPUTS];
-  short cogData[3];  //  sum, LR, FB
+  short cogData[COG_FRAMES][3];  //  sum, LR, FB
 } pressureSensor;
-extern volatile int16_t cogValue[3];
+extern int16_t cogValue[COG_FRAMES][3];
 
 void onIadcReadAll();
 

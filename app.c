@@ -173,29 +173,21 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
 
     case sl_bt_evt_system_external_signal_id:
       /* Process external signals (process notifications) */
-      switch (evt->data.evt_system_external_signal.extsignals){
-        case ES_COG:
-          if (pressureSensor.notifyAdc){
-              memcpy(pressureSensor.adcData, (void*)adcValue, sizeof(pressureSensor.adcData));
-              sc = sl_bt_gatt_server_send_notification(
-                  bleConnection, gattdb_adc, sizeof(pressureSensor.adcData),
-                  (uint8_t*) pressureSensor.adcData);
-              if (sc != SL_STATUS_OK){
-                  app_log_error("sl_bt_gatt_server_send_notification failed to send ADC with code %d", sc);
-              }
+      if (evt->data.evt_system_external_signal.extsignals & ES_ADC && pressureSensor.notifyAdc){
+          sc = sl_bt_gatt_server_send_notification(
+              bleConnection, gattdb_adc, sizeof(pressureSensor.adcData),
+              (uint8_t*) pressureSensor.adcData);
+          if (sc != SL_STATUS_OK){
+              app_log_error("sl_bt_gatt_server_send_notification failed to send ADC with code %d", sc);
           }
-          if (pressureSensor.notifyCog){
-              memcpy(pressureSensor.cogData, (void*)cogValue, sizeof(pressureSensor.cogData));
-              sc = sl_bt_gatt_server_send_notification(
-                  bleConnection, gattdb_cog, sizeof(pressureSensor.cogData),
-                  (uint8_t*) pressureSensor.cogData);
-              if (sc != SL_STATUS_OK){
-                  app_log_error("sl_bt_gatt_server_send_notification failed to send COG with code %d", sc);
-              }
+      }
+      if (evt->data.evt_system_external_signal.extsignals & ES_COG && pressureSensor.notifyCog){
+          sc = sl_bt_gatt_server_send_notification(
+              bleConnection, gattdb_cog, sizeof(pressureSensor.cogData),
+              (uint8_t*) pressureSensor.cogData);
+          if (sc != SL_STATUS_OK){
+              app_log_error("sl_bt_gatt_server_send_notification failed to send COG with code %d", sc);
           }
-          break;
-        default:
-          app_log_error("sl_bt_evt_system_external_signal_id got invalid ID %d", evt->data.evt_system_external_signal.extsignals);
       }
       break;
 

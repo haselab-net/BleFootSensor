@@ -6,7 +6,7 @@
 #define NUM_ADC_INPUTS 8
 #define NUM_ADC_DRIVINGPINS 8
 
-extern volatile short adcValue[NUM_ADC_DRIVINGPINS][NUM_ADC_INPUTS];
+extern short adcValue[NUM_ADC_DRIVINGPINS][NUM_ADC_INPUTS];
 void initIADC();
 void scanIADC();
 void printIADC();

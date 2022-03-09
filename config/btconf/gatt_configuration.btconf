@@ -57,7 +57,7 @@
     <characteristic const="false" id="cog" name="COG" sourceId="cog" uuid="4dea8458-8a98-4c30-b708-6a372d0567ce">
       <description>cog</description>
       <informativeText/>
-      <value length="6" type="hex" variable_length="false">112233445566</value>
+      <value length="60" type="hex" variable_length="false"/>
       <properties>
         <read authenticated="false" bonded="false" encrypted="false"/>
         <notify authenticated="false" bonded="false" encrypted="false"/>

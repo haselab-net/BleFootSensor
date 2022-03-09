@@ -37,7 +37,7 @@ void initLetimer(void)
   // Top value = LF Clock frequency, compare match frequency = 1 HZ
   LETIMER_Init_TypeDef initLetimer = LETIMER_INIT_DEFAULT;
   initLetimer.enable = false;  // Do not enable LETIMER when initializing
-  const int FREQ = 1000;
+  const int FREQ = 300;
   initLetimer.topValue = 32768 / FREQ;         //  for FREQ Hz, LFXO is 32768Hz
   LETIMER_Init(LETIMER0, &initLetimer);
 

@@ -119,7 +119,7 @@
  ***************************   GLOBAL VARIABLES   ******************************
  ******************************************************************************/
 
-volatile short adcValue[NUM_ADC_DRIVINGPINS][NUM_ADC_INPUTS];
+short adcValue[NUM_ADC_DRIVINGPINS][NUM_ADC_INPUTS];
 const short drivingPins[NUM_ADC_DRIVINGPINS] = {4, 3, 2, 1, 0, 0, 4, 6};
 const short drivingPorts[NUM_ADC_DRIVINGPINS] = {gpioPortB, gpioPortB, gpioPortB, gpioPortB,
     gpioPortB, gpioPortA, gpioPortA, gpioPortC};
