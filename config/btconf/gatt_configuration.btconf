@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--Foot sensor-->
-<gatt gatt_caching="true" generic_attribute_service="true" header="gatt_db.h" name="Foot sensor" out="gatt_db.c" prefix="gattdb_">
+<!--FootSens-->
+<gatt gatt_caching="true" generic_attribute_service="true" header="gatt_db.h" name="FootSens" out="gatt_db.c" prefix="gattdb_">
   
   <!--Generic Access-->
   <service advertise="false" name="Generic Access" requirement="mandatory" sourceId="org.bluetooth.service.generic_access" type="primary" uuid="1800">

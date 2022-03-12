@@ -13,9 +13,9 @@ const int xCenter = 30;
 const int yCenter = 120;
 
 //  Convert adc in 12bits to force in 16 bits.
-uint16_t adcToForce(int16_t adc){
+uint16_t adcToForce(short adc){
   if (adc < 100) adc = 100;
-  uint16_t pres = 4096 * 8 * 100 / adc;
+  uint16_t pres = 350000 / adc; //  85 < pres < 3500
   return pres;
 }
 void calcCog(int frame){
@@ -30,9 +30,9 @@ void calcCog(int frame){
       yMom += force * (yPos - yCenter);
     }
   }
-  cogValue[frame][0] = sum / (NUM_ADC_INPUTS*NUM_ADC_DRIVINGPINS);
-  cogValue[frame][1] = xMom / (NUM_ADC_INPUTS*NUM_ADC_DRIVINGPINS*98);
-  cogValue[frame][2] = yMom / (NUM_ADC_INPUTS*NUM_ADC_DRIVINGPINS*248);
+  cogValue[frame][0] = sum / 20;
+  cogValue[frame][1] = xMom / 20;
+  cogValue[frame][2] = yMom / 20;
 }
 
 void onIadcReadAll(){
